@@ -21,7 +21,7 @@ app.listen(port, () => {
 
 function shellCommand(gDriveObject) {
   exec(
-    `bin/sh source /root/sourceHoudini.sh && hython /root/drive/bitstream_baker/bitstream_bake.py -i 69 -s /root/drive/files/${gDriveObject.name} -t /root/drive/output/${gDriveObject.name} /root/drive/bitstream_baker/bitstream_item_bake_pipeline.hiplc`,
+    `source /root/sourceHoudini.sh && hython /root/drive/bitstream_baker/bitstream_bake.py -i 69 -s /root/drive/files/${gDriveObject.name} -t /root/drive/output/${gDriveObject.name} /root/drive/bitstream_baker/bitstream_item_bake_pipeline.hiplc`,
     { cwd: "/root/" },
     (error, stdout, stderr) => {
       if (error) {
