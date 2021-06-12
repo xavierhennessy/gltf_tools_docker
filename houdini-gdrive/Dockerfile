@@ -79,7 +79,7 @@ EXPOSE 1715 4444 4040
 WORKDIR /root/
 # Define default command.
 
-ENTRYPOINT [ "bash" , "npmStart.sh" ]
+ENTRYPOINT [ "bash" , "startConsumer.sh" ]
 
 
 

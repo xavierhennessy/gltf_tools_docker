@@ -1,5 +1,5 @@
 #!/bin/bash
 
-cd usr/src/appp
+cd /usr/src/app
 npm start 
 cd root
