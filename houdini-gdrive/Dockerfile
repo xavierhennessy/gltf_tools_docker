@@ -26,12 +26,12 @@ RUN mkdir /root/houdini_download \
   && apt-get update \
   && apt-get install -y bc strace \
   && /root/houdini_download/houdini.install --auto-install --accept-EULA  --install-license --no-install-engine-maya --no-install-engine-unity --no-install-menus --no-install-hfs-symlink
-# Pull base image.
+# # Pull base image.
 FROM ubuntu:18.04
 #sidefx_licence_server
 
 
-# Add files.
+# # Add files.
 COPY --from=iterim /usr/lib/sesi/ /usr/lib/sesi
 COPY --from=iterim /opt/hfs18.0.597/ /opt/hfs18.0.597/
 RUN export PATH=/opt/hfs18.0.597/bin:$PATH
@@ -40,9 +40,9 @@ RUN apt-get install -y libglu1 libsm6 libxmu-dev libxi6 libgconf-2-4 libegl1-mes
 COPY startHoudiniLicenseServer.sh /root/
 COPY sourceHoudini.sh /root/
 RUN mkdir -p /usr/src/app
-#source houdinisetup.sh
-# Install.
-# build-essential software-properties-common git python3-pip python3-dev 
+# #source houdinisetup.sh
+# # Install.
+# # build-essential software-properties-common git python3-pip python3-dev 
 RUN chmod +x /root/startHoudiniLicenseServer.sh \
   && rm /usr/lib/sesi/licenses.disabled \
   && touch /usr/lib/sesi/licenses
@@ -51,7 +51,8 @@ COPY licenses /usr/lib/sesi/
 RUN cp /opt/hfs18.0.597/bin/hython /root
 RUN /bin/bash -c "source /root/sourceHoudini.sh"
 
-
+# set ENV vars with gdrive ids
+# 
 
 # Set environment variables.
 ENV HOME /root
@@ -69,12 +70,12 @@ RUN apt-get update \
 && apt-get -y install nodejs\
 && npm install 
 
-COPY  /server/ .
+COPY  /consumer .
 RUN  npm install
 
-COPY npmStart.sh  /root/
+COPY startConsumer.sh /root/
 
-EXPOSE 1715 4444
+EXPOSE 1715 4444 4040
 WORKDIR /root/
 # Define default command.
 

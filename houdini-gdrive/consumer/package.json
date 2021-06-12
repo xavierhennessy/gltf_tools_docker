@@ -1,19 +1,21 @@
 {
-  "name": "docker",
+  "name": "consumer",
   "version": "1.0.0",
   "description": "",
-  "main": "data.js",
+  "main": "consumer.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "node consumer.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "amqplib": "^0.8.0",
-    "body-parser": "^1.19.0",
-    "express": "^4.17.1",
-    "nodemon": "^2.0.7"
+    "fs-extra": "^10.0.0",
+    "google-drive-connect": "^1.1.2",
+    "nodemon": "^2.0.7",
+    "p-limit": "^3.1.0",
+    "path": "^0.12.7"
   }
 }
