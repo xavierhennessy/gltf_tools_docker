@@ -77,6 +77,8 @@ const consumeFunction = () => {
 //docker run -p 4444:4444 --add-host=host.docker.internal:host-gateway -e AMQP_HOST='host.docker.internal' server
 // --add-host=host.docker.internal:host-gateway -e AMQP_HOST='host.docker.internal'
 
+//docker run --rm --name rabbitmq -it --hostname my-rabbit -p 15672:15672 -p 5672:5672 rabbitmq:3-management
+
 //////////////////////////////////////////////////////////////////////////////////////
 //express container waiting for a POST request with Gdrive {} as body
 //once it gets the POST it will kick off another container with

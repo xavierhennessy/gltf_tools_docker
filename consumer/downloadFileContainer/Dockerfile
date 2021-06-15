@@ -4,8 +4,10 @@ WORKDIR /usr/src/app
 
 COPY . .
 
+COPY Start.sh .
+
 RUN npm install
 
-EXPOSE 4040
+EXPOSE 9090
 
-CMD [ "npm", "start"]
+CMD [ "bash" ]

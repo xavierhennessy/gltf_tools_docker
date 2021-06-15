@@ -39,7 +39,7 @@ RUN apt-get update
 RUN apt-get install -y libglu1 libsm6 libxmu-dev libxi6 libgconf-2-4 libegl1-mesa rsync
 COPY startHoudiniLicenseServer.sh /root/
 COPY sourceHoudini.sh /root/
-RUN mkdir -p /usr/src/app
+
 # #source houdinisetup.sh
 # # Install.
 # # build-essential software-properties-common git python3-pip python3-dev 
@@ -49,7 +49,7 @@ RUN chmod +x /root/startHoudiniLicenseServer.sh \
 RUN chmod +x /opt/hfs18.0.597/houdini_setup
 COPY licenses /usr/lib/sesi/
 RUN cp /opt/hfs18.0.597/bin/hython /root
-RUN /bin/bash -c "source /root/sourceHoudini.sh"
+# RUN /bin/bash -c "source /root/sourceHoudini.sh"
 
 # set ENV vars with gdrive ids
 # 
@@ -64,22 +64,23 @@ ENV HOME /root
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
+#install node
 RUN apt-get update \
 && apt-get -y install curl gnupg \
 && curl -sL https://deb.nodesource.com/setup_12.x  | bash - \
 && apt-get -y install nodejs\
 && npm install 
 
-COPY  /consumer .
+COPY  /downloadFileContainer .
 RUN  npm install
 
-COPY startConsumer.sh /root/
 
 EXPOSE 1715 4444 4040
 WORKDIR /root/
+COPY start.sh .
 # Define default command.
 
-ENTRYPOINT [ "bash" , "startConsumer.sh" ]
+ENTRYPOINT [ "bash", "start.sh"] 
 
 
 

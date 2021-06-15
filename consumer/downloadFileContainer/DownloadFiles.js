@@ -2,8 +2,6 @@ const NodeGoogleDrive = require("google-drive-connect");
 const fs = require("fs-extra");
 
 const path = require("path");
-// const { Docker } = require("node-docker-api")
-// const docker = new Docker({ socketPath: "/var/run/docker.sock" })
 
 const pLimit = require("p-limit");
 
@@ -19,7 +17,7 @@ let localDirectories = [];
 let containerDirectories = [];
 
 async function downloadSelectedFiles(gDriveObject) {
-  console.log("message received, downloading =>" + gDriveObject);
+  console.log("message received, downloading =>" + gDriveObject.name);
   const googleDriveInstance = new NodeGoogleDrive({
     ROOT_FOLDER: ROOT_FOLDER,
   });
@@ -119,6 +117,20 @@ async function downloadSelectedFiles(gDriveObject) {
   // });
 }
 
+let gDriveObject = JSON.parse(process.env.GDRIVE_OBJECT);
+// let gDriveObject = {
+//   id: "1HsGWbXA4VVE1iTw7XmW5lLDZJSAYtU0v",
+//   name: "02_196_432016",
+//   mimeType: "application/vnd.google-apps.folder",
+//   parents: ["1DujD5UdujAyI1HMfH-NNC-Cg76bSsxfI"],
+//   modifiedTime: "2021-05-05T05:30:57.160Z",
+//   icon: "carryoutlined",
+//   title: "02_196_432016",
+//   key: "1HsGWbXA4VVE1iTw7XmW5lLDZJSAYtU0v",
+// };
+console.log(gDriveObject);
+downloadSelectedFiles(gDriveObject);
+
 // process.on("message", async (selectedFiles) => {
 //   downloadSelectedFiles(selectedFiles)
 // })
@@ -146,4 +158,4 @@ async function downloadSelectedFiles(gDriveObject) {
 // ];
 
 // downloadSelectedFiles(testData);
-exports.downloadSelectedFiles = downloadSelectedFiles;
+// exports.downloadSelectedFiles = downloadSelectedFiles;
