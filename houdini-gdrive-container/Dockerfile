@@ -61,8 +61,8 @@ ENV HOME /root
 # Define working directory.
 
 
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+RUN mkdir -p /root/downloader/
+WORKDIR /root/downloader/
 
 #install node
 RUN apt-get update \

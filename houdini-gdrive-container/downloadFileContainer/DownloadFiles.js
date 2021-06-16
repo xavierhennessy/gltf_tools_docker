@@ -63,21 +63,21 @@ async function downloadSelectedFiles(gDriveObject) {
                 false
               );
 
-              var dir = path.join(__dirname, `./${gDriveObject.name}`);
+              var dir = path.join(__dirname, `./files/${gDriveObject.name}`);
               localDirectories.push(dir);
 
               var containerDir = `${gDriveObject.name}`;
               containerDirectories.push(containerDir);
 
-              // var output = path.join(__dirname, `../../drive/output/${file.name}`)
+              var output = path.join(__dirname, `./ouput/${gDriveObject.name}`);
 
               if (!fs.existsSync(dir)) {
                 fs.mkdirSync(dir, { recursive: true });
               }
 
-              // if (!fs.existsSync(output)) {
-              //   fs.mkdirSync(output, { recursive: true })
-              // }
+              if (!fs.existsSync(output)) {
+                fs.mkdirSync(output, { recursive: true });
+              }
 
               let d = fbxFiles.files.length;
               fbxFiles.files.forEach(async (DLFile) => {
@@ -86,7 +86,7 @@ async function downloadSelectedFiles(gDriveObject) {
                     new Promise(async (resolve) => {
                       await googleDriveInstance.getFile(
                         DLFile,
-                        path.join(__dirname, `./${gDriveObject.name}`)
+                        path.join(__dirname, `./files/${gDriveObject.name}`)
                       );
                       console.log(
                         `${DLFile.name} of ${gDriveObject.name} downloaded`
@@ -117,45 +117,23 @@ async function downloadSelectedFiles(gDriveObject) {
   // });
 }
 
-let gDriveObject = JSON.parse(process.env.GDRIVE_OBJECT);
-// let gDriveObject = {
-//   id: "1HsGWbXA4VVE1iTw7XmW5lLDZJSAYtU0v",
-//   name: "02_196_432016",
-//   mimeType: "application/vnd.google-apps.folder",
-//   parents: ["1DujD5UdujAyI1HMfH-NNC-Cg76bSsxfI"],
-//   modifiedTime: "2021-05-05T05:30:57.160Z",
-//   icon: "carryoutlined",
-//   title: "02_196_432016",
-//   key: "1HsGWbXA4VVE1iTw7XmW5lLDZJSAYtU0v",
-// };
-console.log(gDriveObject);
+// let gDriveObject = JSON.parse(process.env.GDRIVE_OBJECT);
+let gDriveObject = {
+  id: "1HsGWbXA4VVE1iTw7XmW5lLDZJSAYtU0v",
+  name: "02_196_432016",
+  mimeType: "application/vnd.google-apps.folder",
+  parents: ["1DujD5UdujAyI1HMfH-NNC-Cg76bSsxfI"],
+  modifiedTime: "2021-05-05T05:30:57.160Z",
+  icon: "carryoutlined",
+  title: "02_196_432016",
+  key: "1HsGWbXA4VVE1iTw7XmW5lLDZJSAYtU0v",
+};
+// console.log(gDriveObject);
 downloadSelectedFiles(gDriveObject);
 
 // process.on("message", async (selectedFiles) => {
 //   downloadSelectedFiles(selectedFiles)
 // })
-// const testData = [
-//   {
-//     id: "1FMS4H4ovw8Pdb2_ffqqg9OfYCRC4WUOu",
-//     name: "01_195_432015",
-//     mimeType: "application/vnd.google-apps.folder",
-//     parents: ["1DujD5UdujAyI1HMfH-NNC-Cg76bSsxfI"],
-//     modifiedTime: "2021-05-05T05:30:46.295Z",
-//     icon: "carryoutlined",
-//     title: "01_195_432015",
-//     key: "1FMS4H4ovw8Pdb2_ffqqg9OfYCRC4WUOu",
-//   },
-//   {
-//     id: "1HsGWbXA4VVE1iTw7XmW5lLDZJSAYtU0v",
-//     name: "02_196_432016",
-//     mimeType: "application/vnd.google-apps.folder",
-//     parents: ["1DujD5UdujAyI1HMfH-NNC-Cg76bSsxfI"],
-//     modifiedTime: "2021-05-05T05:30:57.160Z",
-//     icon: "carryoutlined",
-//     title: "02_196_432016",
-//     key: "1HsGWbXA4VVE1iTw7XmW5lLDZJSAYtU0v",
-//   },
-// ];
 
 // downloadSelectedFiles(testData);
 // exports.downloadSelectedFiles = downloadSelectedFiles;
