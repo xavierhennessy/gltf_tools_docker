@@ -77,7 +77,9 @@ RUN  npm install
 
 EXPOSE 1715 4444 4040
 WORKDIR /root/
+COPY /bitstream_baker/ ./bitstream_baker/
 COPY start.sh .
+RUN chmod +x /root/start.sh
 # Define default command.
 
 ENTRYPOINT [ "bash", "start.sh"] 

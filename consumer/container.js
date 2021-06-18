@@ -54,6 +54,7 @@ function runContainer(gDriveObject, containerName) {
   return new Promise((resolve, reject) => {
     resolveContainerStarted = resolve;
     console.log("called run container...");
+    console.log(`containerName ===> ${containerName}`);
     docker.container
       .create({
         Image: "houdini-gdrive",
