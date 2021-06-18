@@ -1,13 +1,15 @@
 const tar = require("tar-fs");
 const { Docker } = require("node-docker-api");
 const path = require("path");
+var platform = require("platform-detect");
 // const { default: container } = require("node-docker-api/lib/container");
 // const { shell } = require("electron");
 
 const docker = new Docker({
-  socketPath: "/var/run/docker.sock",
+  socketPath: platform.windows
+    ? "//./pipe/docker_engine"
+    : "/var/run/docker.sock",
 });
-
 let container = null;
 let resolveLODRun = null;
 let resolveContainerStarted = null;
