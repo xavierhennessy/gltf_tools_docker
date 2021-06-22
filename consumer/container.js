@@ -29,26 +29,6 @@ const promisifyStream = (stream) =>
     stream.on("error", reject);
   });
 
-// async function runLOD(gDriveObject) {
-//   console.log("running lod");
-//   // return new Promise(async (resolve, reject) => {
-//   //   resolveLODRun = resolve;
-//   //   let exec2 = await container.exec.create({
-//   //     AttachStdout: true,
-//   //     AttachStderr: true,
-//   //     privileged: true,
-//   //     // Cmd: [
-//   //     //   "/bin/bash",
-//   //     //   "-c",
-//   // `source /root/sourceHoudini.sh && hython /root/drive/bitstream_baker/bitstream_bake.py -i 69 -s /root/drive/files/${gDriveObject.name} -t /root/drive/output/${gDriveObject.name} /root/drive/bitstream_baker/bitstream_item_bake_pipeline.hiplc`,
-//   //     // ],
-//   //     Cmd: ["echo", `${gDriveObject}`],
-//   //   });
-//   //   let stream2 = await exec2.start();
-//   //   await promisifyStream2(stream2);
-//   // });
-// }
-
 //run container after the image is built, resolves when done or reject when fail
 function runContainer(gDriveObject, containerName) {
   return new Promise((resolve, reject) => {

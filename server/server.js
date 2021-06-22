@@ -70,13 +70,14 @@ const consumeFunction = () => {
 //but will all this be inside one container?
 //Will it be one for experss server, one for node Gdrive files, one for houdinin?
 
-//notes from Andrew
-//make existing dockerfile run express 1989 coudl research sthat shit
-//
-
+// run server
 //docker run -p 4444:4444 --add-host=host.docker.internal:host-gateway -e AMQP_HOST='host.docker.internal' server
 // --add-host=host.docker.internal:host-gateway -e AMQP_HOST='host.docker.internal'
 
+//run consumer
+// docker run --add-host=host.docker.internal:host-gateway -e AMQP_HOST='host.docker.internal' -v /var/run/docker.sock:/var/run/docker.sock consumer
+
+// run rabbit
 //docker run --rm --name rabbitmq -it --hostname my-rabbit -p 15672:15672 -p 5672:5672 rabbitmq:3-management
 
 //////////////////////////////////////////////////////////////////////////////////////
