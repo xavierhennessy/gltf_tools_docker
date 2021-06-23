@@ -18,19 +18,19 @@ class GDriveFiles extends React.Component {
     selectedFiles: [],
   };
 
-  // componentDidMount = async () => {
-  //   this.getThoseDriveFiles();
-  // };
-
-  getThoseDriveFiles = async () => {
-    let data = await GetDriveFiles(ROOT_FOLDER);
-    console.log(data);
-    this.setState({ data: data });
+  componentDidMount = () => {
+    this.getThoseDriveFiles();
   };
 
-  testFunction() {
-    console.log("its a test");
-  }
+  getThoseDriveFiles = async () => {
+    console.log("getting files....");
+    let data = await GetDriveFiles(ROOT_FOLDER);
+    console.log(data);
+    setTimeout(() => {
+      this.setState({ data: data });
+    }, 1000);
+    // console.log(this.state.data);
+  };
 
   onFileSelect = (selectedKeys, info) => {
     console.log("selected", selectedKeys, info);
@@ -38,6 +38,7 @@ class GDriveFiles extends React.Component {
   };
 
   setTestData = () => {
+    console.log("setting test data...");
     setTimeout(() => {
       this.setState({ data: testData });
     }, 4000);
@@ -75,6 +76,8 @@ export default GDriveFiles;
 // then once the items are selected and the "bake" button has been pressed
 // the array with the gdrive items will be queued with rabbit
 // the consumer will then fo what it has to do
+
+const nothingData = [];
 
 const testData = [
   {
