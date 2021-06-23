@@ -45,7 +45,7 @@ export default async function GetDriveFiles(ROOT_FOLDER) {
       id: ROOT_FOLDER,
       name: "PODS",
     };
-    rootFolder.icon = "carryoutlined";
+    rootFolder.icon = "CarryOutOutlinedd";
     rootFolder.title = rootFolder.name;
     rootFolder.key = "0-0";
 

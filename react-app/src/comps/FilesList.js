@@ -2,7 +2,7 @@ import React from "react";
 import GetDriveFiles from "./GDriveFiles";
 import { Button, Tree } from "antd";
 import "antd/dist/antd.css";
-import { LoadingOutlined } from "@ant-design/icons";
+import { LoadingOutlined, CarryOutOutlined } from "@ant-design/icons";
 
 const ROOT_FOLDER = "1vbVxi0vq7vsfOE7E5fc-RgT1Lbj8Wgwe"; //EA PRODUCTS
 
@@ -15,11 +15,11 @@ class GDriveFiles extends React.Component {
         icon: <LoadingOutlined />,
       },
     ],
-    selectedFiles: [],
+    selectedFiles: ["one", "two", "three"],
   };
 
   componentDidMount = () => {
-    this.getThoseDriveFiles();
+    // this.getThoseDriveFiles();
   };
 
   getThoseDriveFiles = async () => {
@@ -34,21 +34,20 @@ class GDriveFiles extends React.Component {
 
   onFileSelect = (selectedKeys, info) => {
     console.log("selected", selectedKeys, info);
-    this.setState({ selectedFiles: info.selectedNodes });
+    let selectedLods = info.checkedNodes.filter((node) => !node.children);
+    this.setState({ selectedFiles: selectedLods });
   };
 
   setTestData = () => {
-    console.log("setting test data...");
-    setTimeout(() => {
-      this.setState({ data: testData });
-    }, 4000);
+    console.log("hi my name is niki");
+    console.log(this.state.selectedFiles);
   };
 
   render() {
     return (
       <div>
         <Button type="primary" onClick={this.setTestData}>
-          test it out
+          Say hi from Niki
         </Button>
         <br />
         <br />
@@ -56,17 +55,19 @@ class GDriveFiles extends React.Component {
           checkable={true}
           onCheck={this.onFileSelect}
           onSelect={this.onFileSelect}
-          // showLine={true}
+          showLine={true}
           // showIcon={true}
           defaultExpandedKeys={["0-0"]}
-          treeData={this.state.data}
-          // treeData={testData}
+          // treeData={this.state.data}
+          treeData={testData}
           multiple={true}
         />
       </div>
     );
   }
 }
+
+// hi my name is niki and i am on the train and i am coding, the trick to coding is to buy high and sell low, i know you probably think i'm crazzzzy but that's money babey. I am a capricorn so i know about money, i am listening to a podcast with an aquitted murderer
 
 export default GDriveFiles;
 
