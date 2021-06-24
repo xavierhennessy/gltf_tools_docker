@@ -16,14 +16,17 @@ app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("test page is working");
-  console.log(process.env.AMQP_HOST);
+  // console.log(process.env.AMQP_HOST);
 });
 
-app.get("/q", (req, res) => {
-  res.send("message queued");
+app.post("/q", (req, res) => {
+  //TODO: send back item names for the progess modal
+  let reply = req.body.data.map(obejct => obejct.name)
+  res.send(reply)
   queueFunction(req.body);
-  console.log(req.body + "queued");
+  console.log(req.body);
 });
+
 
 app.listen(port, () => {
   console.log("We're live on " + port);
@@ -40,26 +43,14 @@ const queueFunction = async (objects) => {
     await channel.assertExchange(EXCHANGE_NAME, EXCHANGE_TYPE);
     await channel.assertQueue(QUEUE_NAME);
     channel.bindQueue(QUEUE_NAME, EXCHANGE_NAME, KEY);
-    objects.forEach((object) => {
+    objects.data.forEach((object) => {
       channel.sendToQueue(QUEUE_NAME, Buffer.from(JSON.stringify(object)));
       // console.log(object + " has been queued");
     });
   });
 };
 
-const consumeFunction = () => {
-  connection = rabbit.connect(url);
-  connection.then(async (conn) => {
-    const channel = await conn.createChannel();
-    channel.consume(QUEUE_NAME, (m) => {
-      const paylaod = JSON.parse(m.content);
-      //const square = number * number;
-      //kick off container using payload
-      console.log(paylaod);
-      channel.ack(m);
-    });
-  });
-};
+
 
 // `cd /root/ && /root && /root/startHoudiniLicenseServer.sh && /bin/bash -c source /root/sourceHoudini.sh && hython /root/drive/bitstream_baker/bitstream_bake.py -i 69 -s /root/drive/files/${gDriveObject.name} -t /root/drive/output/${gDriveObject.name} /root/drive/bitstream_baker/bitstream_item_bake_pipeline.hiplc`;
 //how it will work
@@ -71,11 +62,11 @@ const consumeFunction = () => {
 //Will it be one for experss server, one for node Gdrive files, one for houdinin?
 
 // run server
-//docker run -p 4444:4444 --add-host=host.docker.internal:host-gateway -e AMQP_HOST='host.docker.internal' server
+//docker run -p 4444:4444 --add-host=host.docker.internal:host-gateway -e AMQP_HOST='host.docker.internal' queue
 // --add-host=host.docker.internal:host-gateway -e AMQP_HOST='host.docker.internal'
 
 //run consumer
-// docker run --add-host=host.docker.internal:host-gateway -e AMQP_HOST='host.docker.internal' -v /var/run/docker.sock:/var/run/docker.sock consumer
+// docker run --name consumer --add-host=host.docker.internal:host-gateway -e AMQP_HOST='host.docker.internal' -v /var/run/docker.sock:/var/run/docker.sock consumer
 
 // run rabbit
 //docker run --rm --name rabbitmq -it --hostname my-rabbit -p 15672:15672 -p 5672:5672 rabbitmq:3-management
@@ -113,3 +104,30 @@ const testData = [
     key: "1HsGWbXA4VVE1iTw7XmW5lLDZJSAYtU0v",
   },
 ];
+
+const otherTestData = [
+  {
+    "id": "1u9-Xm_E7WZD0an8YKEKM8E3_PWwZjR-Q",
+    "name": "01_167_403190_800",
+    "mimeType": "application/vnd.google-apps.folder",
+    "parents": [
+      "1sdDDctBa0l6sq-D6g-YzTGjnSD6RykaG"
+    ],
+    "modifiedTime": "2021-05-14T04:01:23.304Z",
+    "icon": "carryoutlined",
+    "title": "01_167_403190_800",
+    "key": "1u9-Xm_E7WZD0an8YKEKM8E3_PWwZjR-Q"
+  },
+  {
+    "id": "14mNr5QSvdZEMCCuQakJxBJwCXrzRMP-h",
+    "name": "02_168_403190 _804",
+    "mimeType": "application/vnd.google-apps.folder",
+    "parents": [
+      "1sdDDctBa0l6sq-D6g-YzTGjnSD6RykaG"
+    ],
+    "modifiedTime": "2021-05-05T05:04:59.654Z",
+    "icon": "carryoutlined",
+    "title": "02_168_403190 _804",
+    "key": "14mNr5QSvdZEMCCuQakJxBJwCXrzRMP-h"
+  }
+] 
