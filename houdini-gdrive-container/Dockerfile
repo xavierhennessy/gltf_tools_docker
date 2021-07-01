@@ -51,19 +51,6 @@ COPY licenses /usr/lib/sesi/
 RUN cp /opt/hfs18.0.597/bin/hython /root
 # RUN /bin/bash -c "source /root/sourceHoudini.sh"
 
-# set ENV vars with gdrive ids
-# 
-
-# Set environment variables.
-ENV HOME /root
-# RUN /root/startHoudiniLicenseServer.sh
-# ENV PATH /root/hython
-# Define working directory.
-
-
-RUN mkdir -p /root/downloader/
-WORKDIR /root/downloader/
-
 #install node
 RUN apt-get update \
 && apt-get -y install curl gnupg \
@@ -71,8 +58,20 @@ RUN apt-get update \
 && apt-get -y install nodejs\
 && npm install 
 
+# Set environment variables.
+ENV HOME /root
+
+
+# copy nodejs downloader 
+RUN mkdir -p /root/downloader/
+WORKDIR /root/downloader/
 COPY  /downloadFileContainer .
 RUN  npm install
+
+# copy nodejs consumer (listening to the rabbitmq queue)
+RUN mkdir -p /root/consumer/
+WORKDIR /root/consumer 
+COPY /consumer .
 
 
 EXPOSE 1715 4444 4040
@@ -82,7 +81,7 @@ COPY start.sh .
 RUN chmod +x /root/start.sh
 # Define default command.
 
-ENTRYPOINT [ "bash", "start.sh"] 
+ENTRYPOINT [ "bash", "/consumer/startConsumer.sh"] 
 
 
 

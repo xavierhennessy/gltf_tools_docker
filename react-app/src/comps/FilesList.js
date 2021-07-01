@@ -60,7 +60,7 @@ class GDriveFiles extends React.Component {
     data.forEach((object, i) => {
       setTimeout(() => {
         message.info(`${object} has been queued....`);
-      }, 1000 * i);
+      }, 500 * i);
     });
   };
 

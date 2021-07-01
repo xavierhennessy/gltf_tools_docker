@@ -1,6 +1,7 @@
 const { exec } = require("child_process");
 const express = require("express");
 const rabbit = require("amqplib");
+const { ECONNREFUSED } = require("constants");
 
 const app = express();
 const port = 4444;
@@ -21,12 +22,11 @@ app.get("/", (req, res) => {
 
 app.post("/q", (req, res) => {
   //TODO: send back item names for the progess modal
-  let reply = req.body.data.map(obejct => obejct.name)
-  res.send(reply)
+  let reply = req.body.data.map((obejct) => obejct.name);
+  res.send(reply);
   queueFunction(req.body);
   console.log(req.body);
 });
-
 
 app.listen(port, () => {
   console.log("We're live on " + port);
@@ -50,23 +50,24 @@ const queueFunction = async (objects) => {
   });
 };
 
-
-
 // `cd /root/ && /root && /root/startHoudiniLicenseServer.sh && /bin/bash -c source /root/sourceHoudini.sh && hython /root/drive/bitstream_baker/bitstream_bake.py -i 69 -s /root/drive/files/${gDriveObject.name} -t /root/drive/output/${gDriveObject.name} /root/drive/bitstream_baker/bitstream_item_bake_pipeline.hiplc`;
 //how it will work
 
-//express server with endpoints for tasks in AWS
-//the (probably) GET? will have item "id" for GDrive to download
-//then houdini will do it s thing
-//but will all this be inside one container?
-//Will it be one for experss server, one for node Gdrive files, one for houdinin?
+//TODO:
+// for rabbit
+// consumer to only handle one thing each
+// only handles one ID at time
+// multiple consumers watch q and pick item when avail
+// 2 consumers local
+// 4 q
 
 // run server
 //docker run -p 4444:4444 --add-host=host.docker.internal:host-gateway -e AMQP_HOST='host.docker.internal' queue
 // --add-host=host.docker.internal:host-gateway -e AMQP_HOST='host.docker.internal'
 
 //run consumer
-// docker run --name consumer --add-host=host.docker.internal:host-gateway -e AMQP_HOST='host.docker.internal' -v /var/run/docker.sock:/var/run/docker.sock consumer
+// docker run --privileged --name consumer --add-host=host.docker.internal:host-gateway -e AMQP_HOST='host.docker.internal' -v /var/run/docker.sock:/var/run/docker.sock consumer
+// docker run -d --privileged --name dind-consumer --add-host=host.docker.internal:host-gateway -e AMQP_HOST='host.docker.internal'  dind-consumer
 
 // run rabbit
 //docker run --rm --name rabbitmq -it --hostname my-rabbit -p 15672:15672 -p 5672:5672 rabbitmq:3-management
@@ -107,27 +108,23 @@ const testData = [
 
 const otherTestData = [
   {
-    "id": "1u9-Xm_E7WZD0an8YKEKM8E3_PWwZjR-Q",
-    "name": "01_167_403190_800",
-    "mimeType": "application/vnd.google-apps.folder",
-    "parents": [
-      "1sdDDctBa0l6sq-D6g-YzTGjnSD6RykaG"
-    ],
-    "modifiedTime": "2021-05-14T04:01:23.304Z",
-    "icon": "carryoutlined",
-    "title": "01_167_403190_800",
-    "key": "1u9-Xm_E7WZD0an8YKEKM8E3_PWwZjR-Q"
+    id: "1u9-Xm_E7WZD0an8YKEKM8E3_PWwZjR-Q",
+    name: "01_167_403190_800",
+    mimeType: "application/vnd.google-apps.folder",
+    parents: ["1sdDDctBa0l6sq-D6g-YzTGjnSD6RykaG"],
+    modifiedTime: "2021-05-14T04:01:23.304Z",
+    icon: "carryoutlined",
+    title: "01_167_403190_800",
+    key: "1u9-Xm_E7WZD0an8YKEKM8E3_PWwZjR-Q",
   },
   {
-    "id": "14mNr5QSvdZEMCCuQakJxBJwCXrzRMP-h",
-    "name": "02_168_403190 _804",
-    "mimeType": "application/vnd.google-apps.folder",
-    "parents": [
-      "1sdDDctBa0l6sq-D6g-YzTGjnSD6RykaG"
-    ],
-    "modifiedTime": "2021-05-05T05:04:59.654Z",
-    "icon": "carryoutlined",
-    "title": "02_168_403190 _804",
-    "key": "14mNr5QSvdZEMCCuQakJxBJwCXrzRMP-h"
-  }
-] 
+    id: "14mNr5QSvdZEMCCuQakJxBJwCXrzRMP-h",
+    name: "02_168_403190 _804",
+    mimeType: "application/vnd.google-apps.folder",
+    parents: ["1sdDDctBa0l6sq-D6g-YzTGjnSD6RykaG"],
+    modifiedTime: "2021-05-05T05:04:59.654Z",
+    icon: "carryoutlined",
+    title: "02_168_403190 _804",
+    key: "14mNr5QSvdZEMCCuQakJxBJwCXrzRMP-h",
+  },
+];
