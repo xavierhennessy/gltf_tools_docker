@@ -1,56 +1,31 @@
-const exec = require("child_process").exec;
-// const shellScript = exec("sh startConsumer.sh .");
+const { exec } = require("child_process");
 
-let resolveContainerFunctions = null;
-
-const promisifyStream = (stream) =>
-  new Promise((resolve, reject) => {
-    console.log("promisify start");
-    stream.on("data", (d) => {
-      let string = d.toString();
-      console.log(string);
-      //TODO: change this to detecting "item_bake_completed" & resolve promise
-      if (string.includes("no")) {
-        resolveContainerFunctions();
-        console.log("BAKING LODS!");
-        //TODO: once this is done pass it to the upload to whereever func
-      }
-    });
-    stream.on("end", resolve);
-    stream.on("error", reject);
-  });
-
-const containerFunctions = (object, name) => {
+const bakeLods = (itemName) => {
   return new Promise((res, rej) => {
-    const shellScript = exec("sh ../startBake.sh");
-    // resolveContainerFunctions = res;
-    // process.env.GDRIVE_OBJECT = object;
-    // process.env.GDRIVE_OBJECT_NAME = name;
-    console.log("container functions .. ", name);
-    // console.log(process.env.GDRIVE_OBJECT, process.env.GDRIVE_OBJECT_NAME);
-
-    shellScript.stdout.on("data", (d) => {
+    let lodBake = exec(
+      `/bin/bash -c 'source /root/sourceHoudini.sh' && /opt/hfs18.0.597/bin/hython /root/bitstream_baker/bitstream_bake.py -i 2 -s /root/files/${itemName}/ -t /root/output/${itemName}/ /root/bitstream_baker/bitstream_item_bake_pipeline.hiplc`
+      // "ls"
+    );
+    console.log("container functions .. ", itemName);
+    lodBake.stdout.on("data", (d) => {
       let string = d.toString();
       console.log(string);
-      if (string.includes("you got me")) {
+      if (string.includes("item_bake_completed")) {
         res();
-        console.log(name, " is done");
+        console.log(` ${itemName} is done ...`);
       }
     });
-    shellScript.on("close", (code) => {
-      console.log(`child process exited with code ${code}`);
+    lodBake.stderr.on("data", (e) => {
+      let errString = e.toString();
+      if (errString.includes("No licenses")) {
+        res();
+      }
+      console.log(`stderr: ${e}`);
+    });
+    lodBake.on("close", (code) => {
+      console.log(`bake exit, code => ${code}`);
     });
   });
 };
 
-// const { execSync } = require("child_process");
-// // stderr is sent to stdout of parent process
-// // you can set options.stdio if you want it to go elsewhere
-// const stdout = execSync("ls");
-// const { spawnSync } = require("child_process");
-// const child = spawnSync("ls");
-// console.error("error", child.error);
-// console.log("stdout ", child.stdout);
-// console.error("stderr ", child.stderr);
-
-exports.containerFunctions = containerFunctions;
+exports.bakeLods = bakeLods;

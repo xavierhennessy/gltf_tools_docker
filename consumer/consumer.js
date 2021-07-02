@@ -23,9 +23,12 @@ const consumeFunction = () => {
       // multiple consumers watch q and pick item when avail
       // 2 consumers local
       // 4 q
+      //OLD CONSUMER
       console.log(payload);
       // await containerFunctions
       await containerFunctions(m.content, payload.name);
+      //some func that will set the Gdrive ID to ENV
+      //bash script that stats the DL, sesi server then BAKE
       channel.ack(m);
     });
   });
@@ -39,3 +42,16 @@ consumeFunction();
 // once the sesiserver has started a promise is resolved and the exec can start
 // the exec is the same as before
 // but once the promise is done is acks the comsumer in queue
+
+//houdini-gdrive-consumer container
+// consumer listening to the queue
+// when something is queued fire up gdriveDL
+// once DLed get houdini onto the files
+// then when it's been baked pass it to either
+// nodeGdrive or s3 something or other \
+// pros:
+// dont need dind
+// consumer and houdini in one
+// cons:
+// probably going to have to shell exec or something to do houdini
+// still not sure

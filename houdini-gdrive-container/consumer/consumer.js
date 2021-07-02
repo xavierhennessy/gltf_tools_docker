@@ -1,15 +1,16 @@
 const rabbit = require("amqplib");
 // const { downloadSelectedFiles } = require("./DownloadFiles.js");
 // const { containerFunctions } = require("./container.js");
-const { containerFunctions } = require("./ConsumerFunctions.js");
+const { bakeLods } = require("./ConsumerFunctions.js");
+const { downloadSelectedFiles } = require("./DownloadFiles.js");
 
 const QUEUE_NAME = "test";
 const EXCHANGE_TYPE = "direct";
 const EXCHANGE_NAME = "main";
 const KEY = "myKey";
 
-// const url = `amqp://${process.env.AMQP_HOST}` || "amqp://localhost";
-const url = "amqp://localhost";
+const url = `amqp://${process.env.AMQP_HOST}` || "amqp://localhost";
+// const url = "amqp://localhost";
 
 const consumeFunction = () => {
   connection = rabbit.connect(url, "heartbeat=1000");
@@ -20,12 +21,11 @@ const consumeFunction = () => {
     channel.consume(QUEUE_NAME, async (m) => {
       const payload = JSON.parse(m.content);
       console.log("before container Functions ", payload.name);
-      await containerFunctions(m.content, payload.name);
-      //some func that will set the Gdrive ID to ENV
-      //bash script that stats the DL, sesi server then BAKE
-      // listen to output for "item_bake_complete" to ack each BAKE
+      await downloadSelectedFiles(payload);
+      await bakeLods(payload.name);
+      //TODO: add uploadToWhereEver(does it need a param? dont think so)
       channel.ack(m);
-      console.log("queue acked");
+      console.log(`${payload.name} has been ACKNOWLEDGED..`);
     });
   });
 };

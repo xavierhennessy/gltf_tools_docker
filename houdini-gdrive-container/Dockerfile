@@ -40,9 +40,8 @@ RUN apt-get install -y libglu1 libsm6 libxmu-dev libxi6 libgconf-2-4 libegl1-mes
 COPY startHoudiniLicenseServer.sh /root/
 COPY sourceHoudini.sh /root/
 
-# #source houdinisetup.sh
-# # Install.
-# # build-essential software-properties-common git python3-pip python3-dev 
+# Install.
+# build-essential software-properties-common git python3-pip python3-dev 
 RUN chmod +x /root/startHoudiniLicenseServer.sh \
   && rm /usr/lib/sesi/licenses.disabled \
   && touch /usr/lib/sesi/licenses
@@ -63,25 +62,26 @@ ENV HOME /root
 
 
 # copy nodejs downloader 
-RUN mkdir -p /root/downloader/
-WORKDIR /root/downloader/
-COPY  /downloadFileContainer .
-RUN  npm install
+# RUN mkdir -p /root/downloader/
+# WORKDIR /root/downloader/
+# COPY  /downloadFileContainer .
+# RUN  npm install
 
 # copy nodejs consumer (listening to the rabbitmq queue)
-RUN mkdir -p /root/consumer/
-WORKDIR /root/consumer 
-COPY /consumer .
+# RUN mkdir -p /root/consumer/
+# WORKDIR /root/consumer 
 
 
-EXPOSE 1715 4444 4040
 WORKDIR /root/
+COPY /consumer .
+RUN npm install
+EXPOSE 1715 4444 4040
 COPY /bitstream_baker/ ./bitstream_baker/
-COPY start.sh .
-RUN chmod +x /root/start.sh
+COPY startBake.sh .
+RUN chmod +x /root/startBake.sh
 # Define default command.
 
-ENTRYPOINT [ "bash", "/consumer/startConsumer.sh"] 
+ENTRYPOINT [ "bash", "/root/startConsumer.sh"] 
 
 
 

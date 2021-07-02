@@ -67,7 +67,7 @@ const queueFunction = async (objects) => {
 
 //run consumer
 // docker run --privileged --name consumer --add-host=host.docker.internal:host-gateway -e AMQP_HOST='host.docker.internal' -v /var/run/docker.sock:/var/run/docker.sock consumer
-// docker run -d --privileged --name dind-consumer --add-host=host.docker.internal:host-gateway -e AMQP_HOST='host.docker.internal'  dind-consumer
+// docker run -d --name houdini-consumer --add-host=host.docker.internal:host-gateway -e AMQP_HOST='host.docker.internal'  houdini-consumer
 
 // run rabbit
 //docker run --rm --name rabbitmq -it --hostname my-rabbit -p 15672:15672 -p 5672:5672 rabbitmq:3-management
