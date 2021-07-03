@@ -40,7 +40,6 @@ RUN apt-get install -y libglu1 libsm6 libxmu-dev libxi6 libgconf-2-4 libegl1-mes
 COPY startHoudiniLicenseServer.sh /root/
 COPY sourceHoudini.sh /root/
 
-# Install.
 # build-essential software-properties-common git python3-pip python3-dev 
 RUN chmod +x /root/startHoudiniLicenseServer.sh \
   && rm /usr/lib/sesi/licenses.disabled \
@@ -59,86 +58,18 @@ RUN apt-get update \
 
 # Set environment variables.
 ENV HOME /root
-
-
-# copy nodejs downloader 
-# RUN mkdir -p /root/downloader/
-# WORKDIR /root/downloader/
-# COPY  /downloadFileContainer .
-# RUN  npm install
-
-# copy nodejs consumer (listening to the rabbitmq queue)
-# RUN mkdir -p /root/consumer/
-# WORKDIR /root/consumer 
+ENV HOSTNAME DESKTOP-UM6IC4I
 
 
 WORKDIR /root/
+
 COPY /consumer .
 RUN npm install
+
 EXPOSE 1715 4444 4040
+
 COPY /bitstream_baker/ ./bitstream_baker/
-COPY startBake.sh .
-RUN chmod +x /root/startBake.sh
-# Define default command.
+
 
 ENTRYPOINT [ "bash", "/root/startConsumer.sh"] 
 
-
-
-#THING TO CHANGE IN DOCKERFILE 
-#change workdir to destination folder /root/test...
-#Make the hredner script available at $PATH i guess 
-#that way can run hello_world.hiplc in destination 
-#clean up
-#figure out a motherfucking way to source houdini_setup in the dockerfile 
-#still can't beleive this is like that 
-
-#need to do inside container before running script 
-#must source houdini_setup in /opt/hfs18.0wr8q85/
-#must run hello_world in /opt/hfs18.wo485u2p/bin/
-#set hrender.py to $PATH wont work?
-
-
-
-
-#houdini file/helloworld.hilmodshflk
-
-#found here https://github.com/astefanutti/decktape/issues/126
-#and also this one is required for xcb ----> libegl1-mesa
-#need to specify path for qt libs because some are mixed
-#found at this location 
-#/opt/hfs18.5.499/dsolib/Qt_plugins/platforms# ldd libqxcb.so
-#https://stackoverflow.com/questions/28898787/how-to-handle-specific-hostname-like-h-option-in-dockerfile
-#RUN echo $(grep $(hostname) /etc/hosts | cut -f1) DESKTOP-UM6IC4I >> /etc/hosts && install-software
-#^^ this can be used to set the host name in the docker file 
-#DESKTOP-UM6IC4I
-#Doesn't want to work. Can the host name be set in npm docker api?
-# eg Docker run -h DESKTOP-ksdjfbaldih?
-# sesinetd running locally in seperate container 
-# have it exosed on localhost:8080
-# may need to use a docker compose to get the two containers playing nice 
-# SERVER container -p 8080:1715 
-# HOUDINI container listening to 8080? with hserver to get license 
-# Use own network and set up both containers wiht docekr compose 
-# how do they talk to eachother with docker compose?
-# expose the same network on host? 
-# 
-
-
-# -p passed in gltf tools 
-# check if image exists 
-# build image 
-# if image built dont build 
-# open bash in terminal and do what must be done 
-# get the output files from the container and onto the host 
-# this will be done with shell.exec (what ever the fuck)
-# should also look at creating volume when the container is build 
-# we gonna use rsync to transfer files across from container to host 
-
-
-# take gdrive pathname (URL?) 
-# download contents of gdrive dir to local 
-# local will be in volume for houdini container 
-# gltf_tools will then find volume and feed houdini
-# houdini works magic 
-# output back into drive and also s3?
