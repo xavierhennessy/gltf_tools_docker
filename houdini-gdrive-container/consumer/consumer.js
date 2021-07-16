@@ -1,16 +1,14 @@
 const rabbit = require("amqplib");
-// const { downloadSelectedFiles } = require("./DownloadFiles.js");
-// const { containerFunctions } = require("./container.js");
 const { bakeLods } = require("./ConsumerFunctions.js");
 const { downloadSelectedFiles } = require("./DownloadFiles.js");
 
-const QUEUE_NAME = "test";
+const QUEUE_NAME = "bitreel-rmq";
 const EXCHANGE_TYPE = "direct";
 const EXCHANGE_NAME = "main";
 const KEY = "myKey";
 
-const url = `amqp://${process.env.AMQP_HOST}` || "amqp://localhost";
-// const url = "amqp://localhost";
+// const url = `amqp://${process.env.AMQP_HOST}` || "amqp://localhost";
+const url = "amqp://bitreel:bitreel@23.23.238.129:5672";
 
 const consumeFunction = () => {
   connection = rabbit.connect(url, "heartbeat=1000");
@@ -23,6 +21,7 @@ const consumeFunction = () => {
       console.log("before container Functions ", payload.name);
       await downloadSelectedFiles(payload);
       await bakeLods(payload.name);
+      console.log("payload ==> ", payload);
       //TODO: add uploadToWhereEver(does it need a param? dont think so)
       channel.ack(m);
       console.log(`${payload.name} has been ACKNOWLEDGED..`);

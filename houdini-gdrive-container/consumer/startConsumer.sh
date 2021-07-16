@@ -1,10 +1,11 @@
 #!/bin/bash
 
-# start license server
-/usr/lib/sesi/sesinetd -l /dev/stdout -D -V 4 -z 0 -y 0 -m *.*.*.* -M *.*.*.* -p 1715 -W 1 -l /dev/stdout -u /dev/stdout -R /var/run/sesinetd.pid &
-echo "sesi started"
+#source houdini env and point hserver to license server 
+source sourceHoudini.sh 
+hserver 
+hserver -S 23.23.238.129:1715
 
-#start listening to queue 
+#start listening 2 da q
 cd /root/consumer
 npm start 
 cd ~

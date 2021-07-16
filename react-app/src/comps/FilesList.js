@@ -52,11 +52,11 @@ class GDriveFiles extends React.Component {
       .then((res) => {
         console.log("from queue =>" + res.data);
         this.setState({ bakingLods: res.data });
-        this.info(res.data);
+        this.showMessage(res.data);
       });
   };
 
-  info = (data) => {
+  showMessage = (data) => {
     data.forEach((object, i) => {
       setTimeout(() => {
         message.info(`${object} has been queued....`);

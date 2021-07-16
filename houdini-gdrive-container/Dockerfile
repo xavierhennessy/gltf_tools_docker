@@ -66,7 +66,7 @@ WORKDIR /root/
 COPY /consumer .
 RUN npm install
 
-EXPOSE 1715 4444 4040
+EXPOSE 1715 4444 4040 1714
 
 COPY /bitstream_baker/ ./bitstream_baker/
 

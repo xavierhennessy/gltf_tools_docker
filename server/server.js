@@ -6,11 +6,10 @@ const { ECONNREFUSED } = require("constants");
 const app = express();
 const port = 4444;
 
-const QUEUE_NAME = "test";
+const QUEUE_NAME = "bitreel-rmq";
 const EXCHANGE_TYPE = "direct";
 const EXCHANGE_NAME = "main";
 const KEY = "myKey";
-const numbers = ["one", "two", "three", "four", "five"];
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -33,8 +32,8 @@ app.listen(port, () => {
   //   console.log(data);
 });
 
-const url = `amqp://${process.env.AMQP_HOST}`;
-// const url = "amqp://localhost";
+// const url = `amqp://${process.env.AMQP_HOST}`;
+const url = "amqp://bitreel:bitreel@23.23.238.129:5672";
 
 const queueFunction = async (objects) => {
   connection = rabbit.connect(url);
@@ -64,14 +63,16 @@ const queueFunction = async (objects) => {
 // run server
 //docker run -p 4444:4444 --add-host=host.docker.internal:host-gateway -e AMQP_HOST='host.docker.internal' queue
 // --add-host=host.docker.internal:host-gateway -e AMQP_HOST='host.docker.internal'
+// docker run -p 4444:4444 --name queue -d  queue
 
 //run consumer
 // docker run --privileged --name consumer --add-host=host.docker.internal:host-gateway -e AMQP_HOST='host.docker.internal' -v /var/run/docker.sock:/var/run/docker.sock consumer
-// docker run -d --name houdini-consumer --add-host=host.docker.internal:host-gateway -e AMQP_HOST='host.docker.internal'  houdini-consumer
+// docker run -d --name houdini-consumer  houdini-consumer
 
 // run rabbit
 //docker run --rm --name rabbitmq -it --hostname my-rabbit -p 15672:15672 -p 5672:5672 rabbitmq:3-management
 
+//ssh -i ~/.ssh/rabbitmq-ssh-key.pem ubuntu@23.23.238.129
 //////////////////////////////////////////////////////////////////////////////////////
 //express container waiting for a POST request with Gdrive {} as body
 //once it gets the POST it will kick off another container with
