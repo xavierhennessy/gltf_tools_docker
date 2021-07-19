@@ -105,7 +105,9 @@ def render(args):
     in_node.parm("index").set(args.index)
 
     in_node.cook(force=True)
+    # return "spanner in the works..."
     out_node.cook(force=True)
+    #error here 
     
 #--------------------------------------------------------
 # Main application

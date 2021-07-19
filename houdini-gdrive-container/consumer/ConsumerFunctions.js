@@ -1,5 +1,13 @@
 const { exec } = require("child_process");
 
+const changePermissions = () => {
+  return new Promise(async (res, rej) => {
+    await exec("chmod -R 777 /root/files && chmod -R 777 /root/output");
+    console.log("permissions changed...");
+    res();
+  });
+};
+
 const bakeLods = (itemName) => {
   return new Promise((res, rej) => {
     let lodBake = exec(
@@ -24,7 +32,7 @@ const bakeLods = (itemName) => {
     });
     lodBake.on("close", (code) => {
       console.log(`bake exit, code => ${code}`);
-      if (code === 1 ) {
+      if (code === 1) {
         res();
       }
     });
@@ -32,4 +40,4 @@ const bakeLods = (itemName) => {
 };
 
 exports.bakeLods = bakeLods;
-
+exports.changePermissions = changePermissions;

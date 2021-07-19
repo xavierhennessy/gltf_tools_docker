@@ -1,5 +1,5 @@
 const rabbit = require("amqplib");
-const { bakeLods } = require("./ConsumerFunctions.js");
+const { bakeLods, changePermissions } = require("./ConsumerFunctions.js");
 const { downloadSelectedFiles } = require("./DownloadFiles.js");
 
 const QUEUE_NAME = "bitreel-rmq";
@@ -20,6 +20,7 @@ const consumeFunction = () => {
       const payload = JSON.parse(m.content);
       console.log("before container Functions ", payload.name);
       await downloadSelectedFiles(payload);
+      await changePermissions();
       await bakeLods(payload.name);
       console.log("payload ==> ", payload);
       //TODO: add uploadToWhereEver(does it need a param? dont think so)
