@@ -64,7 +64,10 @@ async function downloadSelectedFiles(gDriveObject) {
                   false
                 );
 
-                var dir = path.join(__dirname, `./files/${gDriveObject.name}`);
+                var dir = path.join(
+                  __dirname,
+                  `./bake/input/${gDriveObject.name}`
+                );
                 localDirectories.push(dir);
 
                 var containerDir = `${gDriveObject.name}`;
@@ -72,7 +75,7 @@ async function downloadSelectedFiles(gDriveObject) {
 
                 var output = path.join(
                   __dirname,
-                  `./output/${gDriveObject.name}`
+                  `./bake/output/${gDriveObject.name}`
                 );
 
                 if (!fs.existsSync(dir)) {
@@ -90,7 +93,10 @@ async function downloadSelectedFiles(gDriveObject) {
                       new Promise(async (resolve) => {
                         await googleDriveInstance.getFile(
                           DLFile,
-                          path.join(__dirname, `./files/${gDriveObject.name}`)
+                          path.join(
+                            __dirname,
+                            `./bake/input/${gDriveObject.name}`
+                          )
                         );
                         console.log(
                           `${DLFile.name} of ${gDriveObject.name} downloaded`

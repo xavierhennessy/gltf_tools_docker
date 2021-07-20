@@ -63,12 +63,18 @@ ENV HOSTNAME DESKTOP-UM6IC4I
 
 WORKDIR /root/
 
+RUN mkdir /root/bake/
+
 COPY /consumer .
 RUN npm install
 
 EXPOSE 1715 4444 4040 1714
 
-COPY /bitstream_baker/ ./bitstream_baker/
+#--storage-opts dm.basesize=20G
+
+COPY /bake/bitstream_baker/ ./bake/bitstream_baker/
+# COPY /files ./bake/files/
+# COPY /output ./bake/output/
 
 
 ENTRYPOINT [ "bash", "/root/startConsumer.sh"] 

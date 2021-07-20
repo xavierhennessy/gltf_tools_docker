@@ -68,6 +68,7 @@ const queueFunction = async (objects) => {
 //run consumer
 // docker run --privileged --name consumer --add-host=host.docker.internal:host-gateway -e AMQP_HOST='host.docker.internal' -v /var/run/docker.sock:/var/run/docker.sock consumer
 // docker run -d --name houdini-consumer  houdini-consumer
+// docker run -d --name bind-houdini-consumer --mount type=bind,source="C:\Users\xaygr\Bitreel\gltf_tools_docker\houdini-gdrive-container\bake",target=/root/bake houdini-consumer
 
 // run rabbit
 //docker run --rm --name rabbitmq -it --hostname my-rabbit -p 15672:15672 -p 5672:5672 rabbitmq:3-management

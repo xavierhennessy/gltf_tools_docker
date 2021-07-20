@@ -18,7 +18,7 @@ const consumeFunction = () => {
     channel.prefetch(1);
     channel.consume(QUEUE_NAME, async (m) => {
       const payload = JSON.parse(m.content);
-      console.log("before container Functions ", payload.name);
+      console.log("Next item up is ...", payload.name);
       await downloadSelectedFiles(payload);
       await changePermissions();
       await bakeLods(payload.name);

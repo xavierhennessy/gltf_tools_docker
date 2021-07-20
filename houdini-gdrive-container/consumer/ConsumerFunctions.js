@@ -1,8 +1,8 @@
-const { exec } = require("child_process");
+const { exec, execSync } = require("child_process");
 
 const changePermissions = () => {
   return new Promise(async (res, rej) => {
-    await exec("chmod -R 777 /root/files && chmod -R 777 /root/output");
+    await exec("chmod -R 777 /root/bake");
     console.log("permissions changed...");
     res();
   });
@@ -11,9 +11,9 @@ const changePermissions = () => {
 const bakeLods = (itemName) => {
   return new Promise((res, rej) => {
     let lodBake = exec(
-      `/bin/bash -c 'source /root/sourceHoudini.sh' &&  /opt/hfs18.0.597/bin/hython /root/bitstream_baker/bitstream_bake.py -i 2 -s /root/files/${itemName}/ -t /root/output/${itemName}/ /root/bitstream_baker/bitstream_item_bake_pipeline.hiplc`
+      `/bin/bash -c 'source /root/sourceHoudini.sh' &&  /opt/hfs18.0.597/bin/hython /root/bake/bitstream_baker/bitstream_bake.py -i 2 -s /root/bake/input/${itemName}/ -t /root/bake/output/${itemName}/ /root/bake/bitstream_baker/bitstream_item_bake_pipeline.hiplc`
+      // "bash bakeLod.sh"
     );
-    // /opt/hfs18.0.597/bin/hserver && /opt/hfs18.0.597/bin/hserver -S 23.23.238.129:1715 &&
     console.log("container functions .. ", itemName);
     lodBake.stdout.on("data", (d) => {
       let string = d.toString();
