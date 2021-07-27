@@ -92,6 +92,7 @@ def error(msg, exit=True):
 	sys.exit(1)
     
 def render(args):
+    print args
     try:
         hou.hipFile.load(args.file)
     except hou.LoadWarning, e:
@@ -105,9 +106,12 @@ def render(args):
     in_node.parm("index").set(args.index)
 
     in_node.cook(force=True)
-    # return "spanner in the works..."
     out_node.cook(force=True)
-    #error here 
+    print out_node
+    # this is just OUT
+    # referring to OUT from line 102 
+    # but what is that dir?
+
     
 #--------------------------------------------------------
 # Main application
@@ -119,3 +123,4 @@ if len(args) < 1 or args[0] == '-':
 
 args = parse_args()
 render(args)
+

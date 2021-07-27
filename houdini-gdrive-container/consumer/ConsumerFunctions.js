@@ -11,7 +11,7 @@ const changePermissions = () => {
 const bakeLods = (itemName) => {
   return new Promise((res, rej) => {
     let lodBake = exec(
-      `/bin/bash -c 'source /root/sourceHoudini.sh' &&  /opt/hfs18.0.597/bin/hython /root/bake/bitstream_baker/bitstream_bake.py -i 2 -s /root/bake/input/${itemName}/ -t /root/bake/output/${itemName}/ /root/bake/bitstream_baker/bitstream_item_bake_pipeline.hiplc`
+      `/bin/bash -c 'source /root/sourceHoudini.sh' &&  /opt/hfs18.0.597/bin/hython2.7 /root/bake/bitstream_baker/bitstream_bake.py -i 2 -s /root/bake/input/${itemName}/ -t /root/bake/output/${itemName}/ /root/bake/bitstream_baker/bitstream_item_bake_pipeline.hiplc`
       // "bash bakeLod.sh"
     );
     console.log("container functions .. ", itemName);

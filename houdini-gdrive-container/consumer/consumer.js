@@ -1,6 +1,7 @@
 const rabbit = require("amqplib");
 const { bakeLods, changePermissions } = require("./ConsumerFunctions.js");
 const { downloadSelectedFiles } = require("./DownloadFiles.js");
+const { uploadLodToDrive } = require("./UploadToDrive")
 
 const QUEUE_NAME = "bitreel-rmq";
 const EXCHANGE_TYPE = "direct";
@@ -22,6 +23,7 @@ const consumeFunction = () => {
       await downloadSelectedFiles(payload);
       await changePermissions();
       await bakeLods(payload.name);
+      await uploadLodToDrive(payload);
       console.log("payload ==> ", payload);
       //TODO: add uploadToWhereEver(does it need a param? dont think so)
       channel.ack(m);

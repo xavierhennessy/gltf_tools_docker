@@ -77,5 +77,6 @@ COPY /bake/bitstream_baker/ ./bake/bitstream_baker/
 # COPY /output ./bake/output/
 
 
+
 ENTRYPOINT [ "bash", "/root/startConsumer.sh"] 
 
